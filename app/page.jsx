@@ -1,5 +1,17 @@
+import PropertyRecent from '@/components/properties/PropertyRecent';
+import Hero from '@/components/ui/Hero';
+import HomeBoxes from '@/components/ui/HomeBoxes';
+import connectDB from '@/config/database';
 const HomePage = () => {
-    return <h1 className='text-2xl font-bold underline'>Hello World</h1>;
+	connectDB();
+
+	return (
+		<>
+			<Hero />
+			<HomeBoxes />
+			<PropertyRecent />
+		</>
+	);
 };
 
 export default HomePage;
