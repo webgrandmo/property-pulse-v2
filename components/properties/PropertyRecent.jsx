@@ -1,12 +1,18 @@
 import PropertyCard from './PropertyCard';
-import properties from '@/data/properties.json';
 import Link from 'next/link';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
 
-const PropertyRecent = ({
+const PropertyRecent = async ({
 	heading = 'Recent Properties',
 	buttonText = 'View All Properties',
 }) => {
-	const recentProperties = properties.slice(0, 3);
+	await connectDB();
+	const recentProperties = await Property.find({})
+		.sort({ createdAt: -1 })
+		.limit(3)
+		.lean();
+
 	return (
 		<>
 			<section className="px-4 py-6">
