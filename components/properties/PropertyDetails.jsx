@@ -48,7 +48,11 @@ const PropertyDetails = ({ property }) => {
 													{key}
 												</div>
 												<div className="text-2xl font-bold text-blue-500">
-													${value}
+													{`${
+														value
+															? `$${value}`
+															: 'N/A'
+													}`}
 												</div>
 											</div>
 										)

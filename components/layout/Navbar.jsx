@@ -10,7 +10,6 @@ import profileDefault from '@/assets/images/profile.png';
 
 const Navbar = () => {
 	const { data: session } = useSession();
-	console.dir(session);
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);

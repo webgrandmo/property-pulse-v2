@@ -18,6 +18,7 @@ const PropertySchema = new Schema(
 		description: {
 			type: String,
 			required: [true, 'Property description is required'],
+			maxlength: [500, 'Description cannot exceed 500 characters'],
 		},
 		location: {
 			street: {
