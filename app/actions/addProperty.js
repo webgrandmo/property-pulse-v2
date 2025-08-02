@@ -4,13 +4,13 @@ import { redirect } from 'next/navigation';
 import connectDB from '@/config/database';
 import Property from '@/models/Property';
 import { getSessionUser } from '@/utils/getSessionUser';
+import cloudinary from '@/config/cloudinary';
 
 const addProperty = async (propertyData) => {
 	const amenities = propertyData.getAll('amenities');
 	const images = propertyData
 		.getAll('images')
-		.filter((image) => image.name !== '')
-		.map((image) => image.name);
+		.filter((image) => image.name !== '');
 
 	const sessionUser = await getSessionUser();
 	if (!sessionUser) {
@@ -44,9 +44,34 @@ const addProperty = async (propertyData) => {
 			email: propertyData.get('seller_info.email'),
 			phone: propertyData.get('seller_info.phone'),
 		},
-		amenities: amenities,
-		images: images,
+		amenities,
 	};
+	const imageUrls = [];
+	for (const imageFile of images) {
+		const imageBuffer = await imageFile.arrayBuffer();
+		const imageArray = Array.from(new Uint8Array(imageBuffer));
+		const imageData = Buffer.from(imageArray);
+
+		// Convert image to base64
+		const base64Image = imageData.toString('base64');
+		const cloudinaryResponse = await cloudinary.uploader.upload(
+			`data:${imageFile.type};base64,${base64Image}`,
+			{
+				folder: 'propertypulse',
+				allowed_formats: ['jpg', 'jpeg', 'png'],
+				use_filename: true,
+				unique_filename: false,
+			}
+		);
+		if (!cloudinaryResponse || !cloudinaryResponse.secure_url) {
+			throw new Error('Failed to upload image to Cloudinary.');
+		}
+		if (!property.images) {
+			property.images = [];
+		}
+		imageUrls.push(cloudinaryResponse.secure_url);
+	}
+	property.images = imageUrls;
 	await connectDB();
 	const newProperty = await Property.create(property);
 	if (!newProperty) {
