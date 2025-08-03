@@ -3,11 +3,11 @@ const PropertyImages = ({ property }) => {
 	return (
 		<section className="bg-blue-50 p-4">
 			<div className="container mx-auto">
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid  gap-4">
 					{property.images && property.images.length > 0 ? (
 						property.images.map((image, index) => (
 							<div
-								className={`${
+								className={` ${
 									property.images.length === 3 && index === 2
 										? 'col-span-2'
 										: 'col-span-1'

@@ -6,9 +6,8 @@ const PropertyImage = ({ image }) => {
 			src={image}
 			alt={`Property Image ${image}`}
 			className="object-cover h-[400px] w-full rounded-xl cursor-pointer"
-			width={0}
-			height={0}
-			sizes="100vw"
+			width={1000}
+			height={400}
 		/>
 	);
 };
